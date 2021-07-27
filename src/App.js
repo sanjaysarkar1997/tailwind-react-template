@@ -1,25 +1,18 @@
-import logo from './logo.svg';
-import './App.css';
+import { connect } from "react-redux";
+import { Auth } from "./redux/action/Auth";
+import { Loading } from "./redux/action/Loading";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+function App(props) {
+  setTimeout(() => {
+    props.Auth({ isLogged: "LOGIN", token: 123456 });
+    props.Loading(true);
+  }, 2000);
+
+  return <div>{props.LOGGED ? <div>Logged</div> : <div>Loading</div>}</div>;
 }
 
-export default App;
+const mapToStateProps = (state) => ({
+  LOGGED: state.Auth.Logged,
+});
+
+export default connect(mapToStateProps, { Auth, Loading })(App);
